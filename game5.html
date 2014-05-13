@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Juegos con canvas</title>
+		<script type="application/javascript" src='game5.js'></script>
+		<link rel="stylesheet" type="text/css" href="style/style.css">
+		<link rel="stylesheet" href="styles/pojoaque.css">
+		<script src="highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</head>
+	<body>
+		<p>Ahora que ya tenemos nuestra imagen por el canvas vamos a controlar nosotros su movimiento con el uso de las flechas del teclado.<br>
+		Declaramos una variable donde guardaremos la variable presionada.
+		</p>
+		<pre>
+			<code>
+				var lastPress=null;
+			</code>
+		</pre>
+		<p>
+			Almacenamos la tecla presionada en nuestra variable mediante una escucha de nuestro teclado.
+		</p>
+		<pre>
+			<code>
+document.addEventListener('keydown',function(){
+    lastPress=evt.keyCode;
+},false);
+			</code>
+		</pre>
+		<p>A continuación comprobaremos si la tecla presionada es la flecha izquierda, la derecha, la de arriba o la de abajo. Cada tecla del teclado viene identificada por un número que se puede ver en el siguiente <a href='http://help.adobe.com/es_ES/AS2LCR/Flash_10.0/help.html?content=00000525.html'>enlace</a>.<br>
+		Declaramos 4 variables, una para cada una de las flechas.
+		<pre>
+			<code>
+var KEY_LEFT=37;
+var KEY_UP=38;
+var KEY_RIGHT=39;
+var KEY_DOWN=40;
+			</code>
+		</pre>
+		</p>
+		<p>
+			Ahora hacemos que nuestro personage se mueva en función de la tecla clickada
+		</p>
+		<pre>
+			<code>
+	if(lastPress==KEY_UP)
+         y-=10;
+    if(lastPress==KEY_RIGHT)
+        x+=10;
+    if(lastPress==KEY_DOWN)
+         y+=10;
+    if(lastPress==KEY_LEFT)
+        x-=10;
+			</code>
+		</pre>
+		<p>Y por último controlamos cuando salga de nuestro canvas tanto por arriba como por abajo y teniendo en cuenta los 10 píxeles que mide nuestra imagen.</p>
+		<pre>
+			<code>
+	if(x>canvas.width-10)
+        x=0;
+    if(y>canvas.height-10)
+        y=0;
+    if(x<0)
+        x=canvas.width-10;
+    if(y<0)
+        y=canvas.height-10;
+			</code>
+		</pre>
+		<canvas id='canvas' width='300px' height='150px'>
+			Canvas not supported by your browser
+		</canvas>
+		<p>Aquí os dejo el código completo hasta el momento</p>
+		<pre>
+			<code>
+window.addEventListener('load',init,false);
+var canvas=null,ctx=null,canvas2=null;
+var x=50,y=50;
+var ibody=new Image();
+ibody.src='images/body.png';
+var lastPress=null;
+var KEY_LEFT=37;
+var KEY_UP=38;
+var KEY_RIGHT=39;
+var KEY_DOWN=40;
+
+document.addEventListener('keydown',function(evt){
+    lastPress=evt.keyCode;
+},false);
+
+function init(){
+    canvas=document.getElementById('canvas');
+    ctx=canvas.getContext('2d');
+    run();
+}
+
+function run(){
+    setTimeout(run,50);
+    act();
+    paint(ctx);
+}
+
+function act(){
+   if(lastPress==KEY_UP)
+         y-=10;
+    if(lastPress==KEY_RIGHT)
+        x+=10;
+    if(lastPress==KEY_DOWN)
+         y+=10;
+    if(lastPress==KEY_LEFT)
+        x-=10;
+    if(x>canvas.width-10)
+        x=0;
+    if(y>canvas.height-10)
+        y=0;
+    if(x<0)
+        x=canvas.width-10;
+    if(y<0)
+        y=canvas.height-10;
+}
+
+function paint(ctx){
+    ctx.fillStyle='#000';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(ibody,x,y);
+}
+			</code>
+		</pre>
+		<a href="index.html">Inicio</a>
+		<a href='game6.html'>Siguiente</a>
+	</body>
+</html>

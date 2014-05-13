@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Juegos con canvas</title>
+		<script type="application/javascript" src='game6.js'></script>
+		<link rel="stylesheet" type="text/css" href="style/style.css">
+		<link rel="stylesheet" href="styles/pojoaque.css">	
+		<script src="highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</head>
+	<body>
+		<p>
+			Ahora vamos a dar un objetivo a nuestro personage: que se coma una manzana.
+			Para empezar haremos igual que hicimos con nuestro personage: declaramos una variable de tipo Image() y le decimos donde tenemos guardada esta image:
+		</p>
+		<pre>
+			<code>
+				var iFood=new Image();
+				iFood.src='images/manzana.png';
+			</code>
+		</pre>
+		<p>En el momento en el que nuestro personage "choque" con la manzana haremos que esta desaparezca y aparezca en otro lugar aleatorio de nuestro canvas.
+		Para ello definiremos una función random:</p>
+		<pre>
+			<code>
+function random(max){
+    return Math.floor(Math.random()*max);
+}
+			</code>
+		</pre>
+		<p>
+			Ahora vamos a controlar el momento en el que choquen nuestro personage con la fruta.
+			Para ello vamos a cambiar un poco nuestro código:<br>
+			Eliminamos nuestras variables x e y y nos creamos una clase Rectangle a la cual le vamos a pasar las coordenadas x e  ademas de la anchura y de la altura del elemento que queramos crear.
+		</p>
+		<pre>
+			<code>
+	function Rectangle(x,y,width,height){
+	    this.x=x;
+	    this.y=y;
+	    this.width=width;
+	    this.height=height;
+	}
+			</code>
+		</pre>
+		<p>
+			¿Esto porqué?<br>
+			Muy sencillo: esto lo debemos hacer porque con nuestro código anterior, donde moviamos nuestro personage en función de sus ejes x e y no teniamos en ningún momento en cuenta el ancho y alto de este personage, por lo cual no podriamos controlar el momento del impacto con nuestra manzana.
+			Para esto vamos a realizar una comparación de los 4 puntos posibles de choque entre la manzana y el personage para comprobar si en alguno de ellos se intersectan.
+			<pre>
+				<code>
+	this.intersects=function(rect){
+        if(rect!=null){
+            return(this.x<rect.x+rect.width&&
+                this.x+this.width>rect.x&&
+                this.y<rect.y+rect.height&&
+                this.y+this.height>rect.y);
+        }
+    }
+				</code>
+			</pre>
+		</p>
+		<p>
+			Con lo que nuestro objeto rectangle nos quedaría de la siguiente formA:
+		</p>
+		<pre>
+			<code>
+	function Rectangle(x,y,width,height){
+	    this.x=x;
+	    this.y=y;
+	    this.width=width;
+	    this.height=height;
+	 
+	    this.intersects=function(rect){
+	        if(rect!=null){
+	            if(this.x<rect.x+rect.width&&
+	                this.x+this.width>rect.x&&
+	                this.y<rect.y+rect.height&&
+	                this.y+this.height>rect.y)
+	                return true;
+	        }
+	    }
+	}
+			</code>
+		</pre>
+		<p>
+			Ahora vamos a crear 2 nuevas variables: una para nuestro personage y otra por la manzana que sean objetos de la clase Rectangle.
+			<br>
+			Les pasamos como parámetros los valores x e y que queramos para iniciarlos (que no coincidan para no pintar uno encima del otro) y la anchura y altura de las imagenes correspondientes a cada una (10x10).
+		</p>
+		<pre>
+			<code>
+var player=new Rectangle(40,40,10,10);
+var food=new Rectangle(80,80,10,10);
+			</code>
+		</pre>
+		<p>
+			Ahora simplemente tenemos que modificar la función paint donde dibujamos nuestro personage sustituyendo la x y la y que teniamos previas por las coordenadas x e y de nuestro personage (player) y de la manzana (food).
+		</p>
+		<pre>
+			<code>
+	ctx.drawImage(iFood,food.x,food.y);
+    	ctx.drawImage(ibody,player.x,player.y);
+			</code>
+		</pre>
+		<p>
+			No nos olvidemos de sustituir los valores x e y en la función act() al mover el personage con nuestro teclado por player.x y player.y.
+			<pre>
+				<code>
+    if(lastPress==KEY_UP)
+         player.y-=10;
+    if(lastPress==KEY_RIGHT)
+        player.x+=10;
+    if(lastPress==KEY_DOWN)
+         player.y+=10;
+    if(lastPress==KEY_LEFT)
+        player.x-=10;
+    if(player.x>canvas.width-10)
+        player.x=0;
+    if(player.y>canvas.height-10)
+        player.y=0;
+    if(player.x<0)
+        player.x=canvas.width-10;
+    if(player.y<0)
+        player.y=canvas.height-10;
+				</code>
+			</pre>
+		</p>
+		<p>Y por último vamos a comprobar dentro de nuestra función act (que se está ejecutando continuamente) si nuestra serpiente choca con la manzana y en caso de que lo haga colocar la manzana en otro lado aleatorio del canvas.</p>
+		<pre>
+			<code>
+	if(player.intersects(food)){
+            food.x=random(canvas.width/10-1)*10;
+            food.y=random(canvas.height/10-1)*10;
+        }
+			</code>
+		</pre>
+		<canvas id='canvas' width='300px' height='150px'>
+			Canvas not supported by your browser
+		</canvas>
+		<p>Aquí tienen el código completo:</p>
+		<pre>
+			<code>
+window.addEventListener('load',init,false);
+var canvas=null,ctx=null,canvas2=null;
+var x=50,y=50;
+var ibody=new Image(),iFood=new Image();
+ibody.src='images/body.png';
+iFood.src='images/manzana.png';
+var lastPress=null;
+var KEY_LEFT=37;
+var KEY_UP=38;
+var KEY_RIGHT=39;
+var KEY_DOWN=40;
+var player=new Rectangle(40,40,10,10);
+var food=new Rectangle(80,80,10,10);
+
+document.addEventListener('keydown',function(evt){
+    lastPress=evt.keyCode;
+},false);
+
+function init(){
+    canvas=document.getElementById('canvas');
+    ctx=canvas.getContext('2d');
+    run();
+}
+
+function random(max){
+    return Math.floor(Math.random()*max);
+}
+
+function run(){
+    setTimeout(run,50);
+    act();
+    paint(ctx);
+}
+
+function act(){
+   if(lastPress==KEY_UP)
+         player.y-=10;
+    if(lastPress==KEY_RIGHT)
+        player.x+=10;
+    if(lastPress==KEY_DOWN)
+         player.y+=10;
+    if(lastPress==KEY_LEFT)
+        player.x-=10;
+    if(player.x>canvas.width-10)
+        player.x=0;
+    if(player.y>canvas.height-10)
+        player.y=0;
+    if(player.x<0)
+        player.x=canvas.width-10;
+    if(player.y<0)
+        player.y=canvas.height-10;
+
+    if(player.intersects(food)){
+            food.x=random(canvas.width/10-1)*10;
+            food.y=random(canvas.height/10-1)*10;
+        }
+}
+
+function paint(ctx){
+    ctx.fillStyle='#000';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(iFood,food.x,food.y);
+    ctx.drawImage(ibody,player.x,player.y);
+    
+}
+
+function Rectangle(x,y,width,height){
+    this.x=x;
+    this.y=y;
+    this.width=width;
+    this.height=height;
+ 
+    this.intersects=function(rect){
+        if(rect!=null){
+            if(this.x<rect.x+rect.width&&
+                this.x+this.width>rect.x&&
+                this.y<rect.y+rect.height&&
+                this.y+this.height>rect.y)
+                return true;
+        }
+    }
+}
+
+window.requestAnimationFrame=(function(){
+    return window.requestAnimationFrame || 
+        window.webkitRequestAnimationFrame || 
+        window.mozRequestAnimationFrame || 
+        function(callback){window.setTimeout(callback,17);};
+})();
+			</code>
+		</pre>
+		<a href="index.html">Inicio</a>
+		<a href='game7.html'>Siguiente</a>
+	</body>
+</html>

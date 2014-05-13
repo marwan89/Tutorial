@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Juegos con canvas</title>
+		<script type="application/javascript" src='game.js'></script>
+		<link rel="stylesheet" type="text/css" href="style/style.css">
+		<link rel="stylesheet" href="styles/pojoaque.css">
+		<script src="highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</head>
+	<body>		
+		<p>
+			Lo primero de todos que debemos tener en cuenta es el sistema de coordenadas de los canvas. Hay que tener en cuenta que todos los dibujos que hagamos se harán respecto a la esquina superior izquierda como se ve en la siguiente imagen.
+			<img src='images/coordenadas.png'><br>
+			Para trabajar con canvas todo lo haremos con JavaScript.
+			Primero de todo debemos hacer referencia a nuestro elemento canvas y luego adquirir su contexto.
+		</p>
+			<pre>
+				<code>
+					var canvas=document.getElementById('canvas');
+					var ctx=canvas.getContext('2d');
+				</code>
+			</pre>
+		<p>
+			A continuación especificamos el color del relleno, en este caso negro:
+		</p>
+		<pre>
+			<code>
+				ctx.fillStyle='#000';
+			</code>
+		</pre>
+		<p>
+			Y por último le decimos qué queremos dibujar en el canvas, en este caso un rectángulo gracias al método fillRect().
+		</p>
+		<p>
+			La sintaxis del método fillRect es (izquierda,arriba,ancho,largo)
+		</p>
+		<pre>
+			<code>
+				ctx.fillRect(0,0,canvas.width,canvas.height);
+			</code>
+		</pre>
+		
+		<p>
+			A continuación se muestra el código completo de cómo se dibuja un rectangulo negro con canvas.
+		</p>
+			<pre>
+				<code>
+//Añadimos una escucha para que una vez cargada la página comience a ejecutar la función init.
+window.addEventListener('load',init,false);
+//Creamos dos variables donde guardaremos nuestro canvas y nuestro contexto.
+var canvas=null,ctx=null;
+
+//Definimos la función init
+function init(){
+//Obtenemos nuestro canvas gracias a su identificador
+    canvas=document.getElementById('canvas');
+//Obtenemos el contexto de nuestro canvas
+    ctx=canvas.getContext('2d');
+//Llamamos a la función paint pasandola como argumento el contexto
+    paint(ctx);
+}
+//Definimos la función paint.
+function paint(ctx){
+//Indicamos el color que vamos a pintar:en este caso el negro.
+    ctx.fillStyle='#000';
+//Dibujamos un rectangulo con el método fillRect en el que le pasamos las coordenadas x, y su anchura y su altura en este orden.
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+}
+				</code>
+			</pre>
+		
+		<p>
+			Aquí se visualiza el resultado de nuestro código:
+			<canvas id='canvas' width='300px' height='150px'>
+			Canvas not supported by your browser
+			</canvas>
+		</p>		
+		<a href='index.html'>Volver</a>
+	</body>
+</html>

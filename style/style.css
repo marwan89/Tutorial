@@ -1,0 +1,19 @@
+body{
+	background: white;
+	background-color: #F7F8E0;
+	margin-left: 2%;
+	margin-right: 2%;
+}
+#canvas{
+	display: block;
+	margin: 0 auto;
+}
+#lista{
+	list-style: none;
+}
+#lista ul a{
+	text-decoration: none;
+}
+p{
+	background-color: white;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Juegos con canvas</title>
+		<script type="application/javascript" src='game2.js'></script>
+		<link rel="stylesheet" type="text/css" href="style/style.css">
+		<link rel="stylesheet" href="styles/pojoaque.css">
+		<script src="highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</head>
+	<body>
+		<h1>Parte 2. Pintando nuestro personage.</h1>
+		<p>
+			En este punto vamos a dibujar nuestro personage dentro del canvas.<br>
+			Para ello vamos a usar un requestAnimationFrame que es una función nueva que equivaldría a llamar un setTimeout(run,17), pero de forma optimizada. Para más información puedes visitar el siguiente <a href='https://developer.mozilla.org/es/docs/DOM/window.requestAnimationFrame'>enlace</a>
+			<br>
+			En la función init() sustituimos la llamada que hacíamos a paint(	) por una nueva, run() que a su vez llamará a la función paint() 	y al requestAnimationFrame.
+		</p>
+		<pre>
+			<code>
+function run(){
+    requestAnimationFrame(run); 
+    paint(ctx);
+}
+			</code>
+		</pre>
+		<p>
+			Ahora en la función paint() dibujamos nuestro personaje, inicialmente dibujaremos un cuadrado pequeño para ver cómo queda.
+		</p>
+			<pre>
+				<code>
+function paint(ctx){
+    ctx.fillStyle='#000';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#DF0101';
+    ctx.fillRect(x,y,10,10);
+}
+				</code>
+			</pre>	
+		<canvas id='canvas' width='300px' height='150px'>
+			Canvas not supported by your browser
+		</canvas>
+		<a href="index.html">Inicio</a>
+		<a href='game3.html'>Siguiente</a>
+	</body>
+</html>
