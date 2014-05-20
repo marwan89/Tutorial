@@ -39,9 +39,9 @@ function act(){
             body[0].x=0;
         if(body[0].y>canvas.height-10)
             body[0].y=0;
-        if(body[0].x<0)
+        if(body[0].x&lt;0)
             body[0].x=canvas.width-10;
-        if(body[0].y<0)
+        if(body[0].y&lt;0)
             body[0].y=canvas.height-10;
 			</code>
 		</pre>
@@ -50,8 +50,8 @@ function act(){
 		</p>
 		<pre>
 			<code>
-	for(var i=0;i&lt;body.length;i++){
-        ctx.drawImage(pared,wall[i].x,wall[i].y);
+	for(var i=0,l=body.length;i&lt;l;i++){
+         ctx.drawImage(ibody,body[i].x,body[i].y);
     }
 			</code>
 		</pre>
@@ -60,7 +60,7 @@ function act(){
 		</p>
 		<pre>
 			<code>
-				for(var i=body.length-1;i>0;i--){
+	for(var i=body.length-1;i>0;i--){
             body[i].x=body[i-1].x;
             body[i].y=body[i-1].y;
         }
@@ -71,10 +71,9 @@ function act(){
 		</p>
 		<pre>
 			<code>
-				 body.push(new Rectangle(food.x,food.y,10,10));
+                body.push(new Rectangle(food.x,food.y,10,10));
 			</code>
 		</pre>
-		
 		<p>
 			Podemos declarar también una variable score para guardar la puntuación y que esta vaya aumentando cada vez que comamos la manzana.
 		</p>
@@ -88,10 +87,10 @@ function act(){
 		</p>
 		<pre>
 			<code>
-			if(body[0].intersects(food)){
-                body.push(new Rectangle(food.x,food.y,10,10));
-                food.x=random(canvas.width/10-1)*10;
-                food.y=random(canvas.height/10-1)*10;
+	if(body[0].intersects(food)){//Si choca nuestra cabeza con la manzana
+                body.push(new Rectangle(food.x,food.y,10,10));//Aumentamos en uno nuestra serpiente
+                food.x=random(canvas.width/10-1)*10;//Generamos otra manzana
+                food.y=random(canvas.height/10-1)*10;//Aumentamos en uno nuestra puntuación
                 score++;
             }
 			</code>
@@ -99,12 +98,18 @@ function act(){
 		<p>
 			Y pintaremos en el extremo de nuestro canvas la palabra score seguido de la puntuación que tenemos.
 		</p>
+		<pre>
+			<code>
+			ctx.fillStyle='#fff';
+    			ctx.fillText('Score:'+score,0,15);
+			</code>
+		</pre>
 		<p>
 			No podemos olvidarnos de controlar que nuestra serpiente cuando sea muy grande, si choca consigo mismo perdamos.
 		</p>
 		<pre>
 			<code>
-		 for(var i=4,l=body.length;i<l;i++){
+	for(var i=3,l=body.length;i&lt;l;i++){
             if(body[0].intersects(body[i])){
                 pause=true;
             }
@@ -122,10 +127,12 @@ function act(){
 		</p>
 		<pre>
 			<code>
-			if(body[0].intersects(wall[i])){
+	for(var i=0,l=wall.length;i&lt;l;i++){//Recorremos todas las paredes existentes
+            if(body[0].intersects(wall[i])){
                 gameover=true;
                 pause=true;
             }
+           }
 			</code>
 		</pre>
 		<p>
@@ -133,7 +140,7 @@ function act(){
 		</p>
 		<pre>
 			<code>
-			for(var i=4,l=body.length;i<l;i++){
+	for(var i=3,l=body.length;i&lt;l;i++){
             if(body[0].intersects(body[i])){
                 pause=true;
                 gameover=true;
@@ -145,19 +152,94 @@ function act(){
 		<pre>
 			<code>
 function reset(){
-    score=0;
-    
-    body[0].x=40;
-    body[0].y=40;
-    food.x=random(canvas.width/10-1)*10;
+    score=0;//Reiniciamos nuestra puntuación
+    lastPress=KEY_RIGHT;//Comenzamos moviendonos hacia la derecha
+    body.length=0;//Reiniciamos la longitud de la serpiente
+    body.push(new Rectangle(40,40,10,10));
+    body.push(new Rectangle(0,0,10,10));
+    body.push(new Rectangle(0,0,10,10));
+    food.x=random(canvas.width/10-1)*10;//Generamos la fruta en otro lado del canvas
     food.y=random(canvas.height/10-1)*10;
     gameover=false;
 }
 			</code>
 		</pre>
-		<canvas id='canvas' width='300px' height='150px'>
+		<p>
+			Vamos a controlar una última cosa en cuanto al movimiento de nuestra serpiente: si nos estamos moviendo en sentido horizontontal o vertical que no podamos invertir este sentido, es decir: si estamos desplazandonos a la derecha por ejemplo debemos impedir que clicando en la flecha izquierda cambiemos su sentido.
+			Para ello, declaramos primeramente una variable dir que nos indicará la dirección de nuestra serpiente.
+		</p>
+		<pre>
+			<code>
+				var dir=0;
+			</code>
+		</pre>
+		<p>
+			Ahora en la función act() vamos a cambiar nuestro código
+		</p>
+		<pre>
+			<code>
+	if(lastPress==KEY_UP)
+            player.y-=10;
+        if(lastPress==KEY_RIGHT)
+            player.x+=10;
+        if(lastPress==KEY_DOWN)
+            player.y+=10;
+        if(lastPress==KEY_LEFT)
+            player.x-=10;
+			</code>
+		</pre>
+		<p>
+			Por el siguiente:
+		</p>
+		<pre>
+			<code>
+	if(lastPress==KEY_UP)
+            dir=0;
+        if(lastPress==KEY_RIGHT)
+            dir=1;
+        if(lastPress==KEY_DOWN)
+            dir=2;
+        if(lastPress==KEY_LEFT)
+            dir=3;
+
+        if(dir==0)
+            body[0].y-=10;
+        if(dir==1)
+            body[0].x+=10;
+        if(dir==2)
+            body[0].y+=10;
+        if(dir==3)
+            body[0].x-=10;
+			</code>
+		</pre>
+		<p>
+			Hasta ahora este código hace lo mismo que teniamos anteriormente, vamos a añadir la restricción de que no pueda moverse en sentido opuesto al que lo está haciendo actualmente:
+		</p>
+		<pre>
+			<code>
+	if(lastPress==KEY_UP&&dir!=2)//Impedimos el desplazamiento hacia abajo si estamos ascendiendo
+            dir=0;
+        if(lastPress==KEY_RIGHT&&dir!=3)//Impedimos el desplazamiento izquierdo al desplazarnos a la derecha.
+            dir=1;
+        if(lastPress==KEY_DOWN&&dir!=0)//Impedimos el desplazamiento hacia arriba si estamos descendiendo
+            dir=2;
+        if(lastPress==KEY_LEFT&&dir!=1)//Impedimos el desplazamiento derecho al desplazarnos a la izquierda.
+            dir=3;
+			</code>
+		</pre>
+		<p>
+			Aquí podemos ver nuestro resultado:
+		</p>
+		<canvas onmouseover="hover1()" onmouseout="hover2()" id='canvas' width='300px' height='150px' scrolling="no">
 			Canvas not supported by your browser
 		</canvas>
-	
+		<p id='scroll'>
+			Deja el ratón dentro del canvas para evitar el scroll de la página.
+		</p>
+		<p>
+			Os dejo el código completo a continuación:
+		</p>
+		<iframe src="./iframe8.html" width='90%' height='440'>
+		</iframe>
 	</body>
 </html>

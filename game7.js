@@ -43,7 +43,7 @@ function run(){
 
 function act(){
     if(!pause){
-       if(lastPress==KEY_UP)
+        if(lastPress==KEY_UP)
              player.y-=10;
         if(lastPress==KEY_RIGHT)
             player.x+=10;
@@ -51,6 +51,7 @@ function act(){
              player.y+=10;
         if(lastPress==KEY_LEFT)
             player.x-=10;
+
         if(player.x>canvas.width-10)
             player.x=0;
         if(player.y>canvas.height-10)

@@ -28,18 +28,6 @@ function hover2(){
     document.body.style.overflow = 'visible';
 }
 
-// var bodi=document.body;
-// canvas.hover(function() {
-//             bodi.css('overflow','hidden');
-//         },function(){
-//             bodi.css('overflow','visible');
-//         });
-
-// body.length=0;
-// body.push(new Rectangle(40,40,10,10));
-// body.push(new Rectangle(-10,-10,10,10));
-// body.push(new Rectangle(0,0,10,10));
-
 wall.push(new Rectangle(100,50,10,10));
 wall.push(new Rectangle(100,100,10,10));
 wall.push(new Rectangle(200,50,10,10));

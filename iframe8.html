@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Juegos con canvas</title>
+        <script type="application/javascript" src='game8.js'></script>
+        <link rel="stylesheet" type="text/css" href="style/style.css">
+        <link rel="stylesheet" href="styles/pojoaque.css">  
+        <script src="highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </head>
+    <body>
+        <pre>
+			<code>
 window.addEventListener('load',init,false);
 var canvas=null,ctx=null,canvas2=null;
 var ibody=new Image(),iFood=new Image(),pared=new Image();
@@ -10,7 +24,7 @@ var KEY_UP=38;
 var KEY_RIGHT=39;
 var KEY_DOWN=40;
 var KEY_ENTER=13;
-//var player=new Rectangle(40,40,10,10);
+
 var body=new Array();
 var food=new Rectangle(80,80,10,10);
 var wall=new Array();
@@ -18,27 +32,6 @@ var pause=true;
 var score=0;
 var gameover=true;
 var dir=0;
-
-function hover1(){
-    console.log('Hover 1');
-    document.body.style.overflow = 'hidden';
-}
-function hover2(){
-    console.log('Hover 2');
-    document.body.style.overflow = 'visible';
-}
-
-// var bodi=document.body;
-// canvas.hover(function() {
-//             bodi.css('overflow','hidden');
-//         },function(){
-//             bodi.css('overflow','visible');
-//         });
-
-// body.length=0;
-// body.push(new Rectangle(40,40,10,10));
-// body.push(new Rectangle(-10,-10,10,10));
-// body.push(new Rectangle(0,0,10,10));
 
 wall.push(new Rectangle(100,50,10,10));
 wall.push(new Rectangle(100,100,10,10));
@@ -109,12 +102,12 @@ function act(){
             body[0].x=0;
         if(body[0].y>canvas.height-10)
             body[0].y=0;
-        if(body[0].x<0)
+        if(body[0].x&lt;0)
             body[0].x=canvas.width-10;
-        if(body[0].y<0)
+        if(body[0].y&lt;0)
             body[0].y=canvas.height-10;
 
-        for(var i=3,l=body.length;i<l;i++){
+        for(var i=3,l=body.length;i&lt;l;i++){
             if(body[0].intersects(body[i])){
                 gameover=true;
                 pause=true;
@@ -126,7 +119,7 @@ function act(){
                 food.y=random(canvas.height/10-1)*10;
                 score++;
             }
-        for(var i=0,l=wall.length;i<l;i++){
+        for(var i=0,l=wall.length;i&lt;l;i++){
             if(body[0].intersects(wall[i])){
                 gameover=true;
                 pause=true;
@@ -148,10 +141,10 @@ function paint(ctx){
     ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.drawImage(iFood,food.x,food.y);
    
-    for(var i=0,l=body.length;i<l;i++){
+    for(var i=0,l=body.length;i&lt;l;i++){
          ctx.drawImage(ibody,body[i].x,body[i].y);
     }
-    for(var i=0,l=wall.length;i<l;i++){
+    for(var i=0,l=wall.length;i&lt;l;i++){
         ctx.drawImage(pared,wall[i].x,wall[i].y);
     }
     ctx.fillStyle='#fff';
@@ -165,6 +158,8 @@ function paint(ctx){
             ctx.fillText('PAUSE',150,75);
         ctx.textAlign='left';
     };
+    
+    
 }
 
 function Rectangle(x,y,width,height){
@@ -175,15 +170,14 @@ function Rectangle(x,y,width,height){
  
     this.intersects=function(rect){
         if(rect!=null){
-            if(this.x<rect.x+rect.width&&
+            if(this.x&lt;rect.x+rect.width&&
                 this.x+this.width>rect.x&&
-                this.y<rect.y+rect.height&&
+                this.y&lt;rect.y+rect.height&&
                 this.y+this.height>rect.y)
                 return true;
         }
     }
 }
-
 
 window.requestAnimationFrame=(function(){
     return window.requestAnimationFrame || 
@@ -191,3 +185,6 @@ window.requestAnimationFrame=(function(){
         window.mozRequestAnimationFrame || 
         function(callback){window.setTimeout(callback,17);};
 })();
+			</code>
+		</pre>
+    </body>

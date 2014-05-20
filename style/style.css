@@ -17,3 +17,8 @@ body{
 p{
 	background-color: white;
 }
+#scroll{
+	color: blue;
+	background-color: beige;
+	text-align: center;
+}
