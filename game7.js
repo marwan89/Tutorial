@@ -10,6 +10,7 @@ var KEY_LEFT=37;
 var KEY_UP=38;
 var KEY_RIGHT=39;
 var KEY_DOWN=40;
+var KEY_ENTER=13;
 var player=new Rectangle(40,40,10,10);
 var food=new Rectangle(80,80,10,10);
 var wall=new Array();
@@ -72,6 +73,10 @@ function act(){
                 food.y=random(canvas.height/10-1)*10;
             }
         }
+    }
+    if(lastPress==KEY_ENTER){
+        pause=!pause;
+        lastPress=null;
     }
 }
 

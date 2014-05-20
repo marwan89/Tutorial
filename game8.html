@@ -67,11 +67,20 @@ function act(){
 			</code>
 		</pre>
 		<p>
-			Por último: vamos a hacer que cuando comamos la manzana nuestra serpiente aumente, para ello añadiremos un elemento de tipo rectangle a nuestro array
+			Siguiente paso:vamos a hacer que cuando comamos la manzana nuestra serpiente aumente, para ello añadiremos un elemento de tipo rectangle a nuestro array
 		</p>
 		<pre>
 			<code>
 				 body.push(new Rectangle(food.x,food.y,10,10));
+			</code>
+		</pre>
+		
+		<p>
+			Podemos declarar también una variable score para guardar la puntuación y que esta vaya aumentando cada vez que comamos la manzana.
+		</p>
+		<pre>
+			<code>
+				var score=0;
 			</code>
 		</pre>
 		<p>
@@ -83,7 +92,67 @@ function act(){
                 body.push(new Rectangle(food.x,food.y,10,10));
                 food.x=random(canvas.width/10-1)*10;
                 food.y=random(canvas.height/10-1)*10;
+                score++;
             }
+			</code>
+		</pre>
+		<p>
+			Y pintaremos en el extremo de nuestro canvas la palabra score seguido de la puntuación que tenemos.
+		</p>
+		<p>
+			No podemos olvidarnos de controlar que nuestra serpiente cuando sea muy grande, si choca consigo mismo perdamos.
+		</p>
+		<pre>
+			<code>
+		 for(var i=4,l=body.length;i<l;i++){
+            if(body[0].intersects(body[i])){
+                pause=true;
+            }
+        }
+			</code>
+		</pre>
+		<p>Por último vamos a controlar cuando perdemos: es decir, cuando nos choquemos o bien con el muro o bien con nosotros mismos habremos perdido la partida por lo que empezaremos declarando una variable booleana para saber si hemos perdido o no.</p>		
+		<pre>
+			<code>
+				var gameover=false.
+			</code>
+		</pre>
+		<p>
+			Esta variable tomará el valor true cuando choque con la pared
+		</p>
+		<pre>
+			<code>
+			if(body[0].intersects(wall[i])){
+                gameover=true;
+                pause=true;
+            }
+			</code>
+		</pre>
+		<p>
+			O cuando choquemos con nosotros mismo:
+		</p>
+		<pre>
+			<code>
+			for(var i=4,l=body.length;i<l;i++){
+            if(body[0].intersects(body[i])){
+                pause=true;
+                gameover=true;
+            }
+        }
+			</code>
+		</pre>
+		<p>Como es lógico si perdemos debemos reiniciar nuestro juego: es decir, nuestra puntación y el tamaño de nuestra serpiente: Para ello vamos a declarar una función reset()</p>
+		<pre>
+			<code>
+function reset(){
+    score=0;
+    
+    body[0].x=40;
+    body[0].y=40;
+    food.x=random(canvas.width/10-1)*10;
+    food.y=random(canvas.height/10-1)*10;
+    gameover=false;
+}
 			</code>
 		</pre>
 		<canvas id='canvas' width='300px' height='150px'>

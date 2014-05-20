@@ -8,6 +8,7 @@ var KEY_LEFT=37;
 var KEY_UP=38;
 var KEY_RIGHT=39;
 var KEY_DOWN=40;
+var KEY_ENTER=13;
 
 document.addEventListener('keydown',function(evt){
     lastPress=evt.keyCode;
@@ -42,6 +43,11 @@ function act(){
         x=canvas.width-10;
     if(y<0)
         y=canvas.height-10;
+
+    if(lastPress==KEY_ENTER){
+        pause=!pause;
+        lastPress=null;
+    }
 }
 
 function paint(ctx){

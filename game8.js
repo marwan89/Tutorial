@@ -10,12 +10,14 @@ var KEY_LEFT=37;
 var KEY_UP=38;
 var KEY_RIGHT=39;
 var KEY_DOWN=40;
+var KEY_ENTER=13;
 //var player=new Rectangle(40,40,10,10);
 var body=new Array();
 var food=new Rectangle(80,80,10,10);
 var wall=new Array();
 var pause=false;
 var score=0;
+var gameover=false;
 
 body.length=0;
 body.push(new Rectangle(40,40,10,10));
@@ -41,6 +43,17 @@ function random(max){
     return Math.floor(Math.random()*max);
 }
 
+function reset(){
+    score=0;
+   body.push(new Rectangle(40,40,10,10));
+    body.push(new Rectangle(0,0,10,10));
+    body.push(new Rectangle(0,0,10,10));
+    food.x=random(canvas.width/10-1)*10;
+    food.y=random(canvas.height/10-1)*10;
+    gameover=false;
+    body.length=0;
+}
+
 function run(){
     setTimeout(run,50);
     act();
@@ -49,6 +62,9 @@ function run(){
 
 function act(){
     if(!pause){
+        if(gameover){
+            reset();
+        }
        if(lastPress==KEY_UP)
              body[0].y-=10;
         if(lastPress==KEY_RIGHT)
@@ -75,6 +91,7 @@ function act(){
             }
         for(var i=0,l=wall.length;i<l;i++){
             if(body[0].intersects(wall[i])){
+                gameover=true;
                 pause=true;
             }
             if(food.intersects(wall[i])){
@@ -86,11 +103,16 @@ function act(){
             body[i].x=body[i-1].x;
             body[i].y=body[i-1].y;  
         }
-        for(var i=4,l=body.length;i<l;i++){
+        for(var i=3,l=body.length;i<l;i++){
             if(body[0].intersects(body[i])){
                 pause=true;
+                gameover=true;
             }
         }
+    }
+    if(lastPress==KEY_ENTER){
+        pause=!pause;
+        lastPress=null;
     }
 }
 
@@ -110,7 +132,10 @@ function paint(ctx){
     if (pause) {
         ctx.fillStyle='#fff';
         ctx.textAlign='center';
-        ctx.fillText('PAUSE',150,75);
+        if(gameover)
+            ctx.fillText('GAME OVER',150,75);
+        else
+            ctx.fillText('PAUSE',150,75);
     };
     
     
