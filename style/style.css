@@ -15,10 +15,14 @@ body{
 	text-decoration: none;
 }
 p{
+	padding: 1% 1%;
 	background-color: white;
 }
 #scroll{
 	color: blue;
 	background-color: beige;
 	text-align: center;
+}
+img{
+	display: block;
 }
