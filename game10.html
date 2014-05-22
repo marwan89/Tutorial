@@ -36,10 +36,32 @@
 			</code>
 		</pre>
 		<p>
-			Luego nos creamos una función en la que por una lado controlemos nuestro tamaño y cuando este sea mayor que 5 aumentaremos su nivel en 1.Lo normal sería poner un alto mas alto que 5 pero de esta manera podemos ver como avanzamos de nivel rápidamente.<br>
-			A continuación se comprueba el nivel que tenemos y en función de este colocamos las paredes en una disposición u otra y siempre reseteamos nuestro tamaño al inicial.
+			Luego nos creamos una función en la que controlemos nuestro tamaño y cuando este sea mayor que 5 (Lo normal sería poner un alto mas alto que 5 pero de esta manera podemos ver como avanzamos de nivel rápidamente),aumentaremos su nivel en 1, reiniciamos el tamaño y la posición de nuestro personage y llamamos a una función que nos pinte mas o menos paredes en función del nivel.<br>
 		</p>
-		
+		<pre>
+			<code>
+function checklevel(){
+    if(body.length==5){
+        level=level+1;
+        paintwalls();//Llamamos a la función que nos crea las paredes en función del nivel.
+        dir=1;
+        lastPress=KEY_RIGHT;
+        body.length=0;
+        body.push(new Rectangle(40,40,10,10));
+        body.push(new Rectangle(0,0,10,10));
+        body.push(new Rectangle(0,0,10,10));
+        food.x=random(canvas.width/10-1)*10;
+        food.y=random(canvas.height/10-1)*10;
+        pause=!pause;
+    }
+}
+			</code>
+		</pre>
+		<p>
+			Os dejo el código que he utilizado yo para dibujar las paredes según el nivel, pero eso cada uno lo puede poner como más le guste.
+		</p>
+		<iframe src="./iframe10.html" width='60%' height='440'>
+		</iframe>
 					<!-- <canvas onmouseover="hover1()" onmouseout="hover2()" id="canvas" width="300px" height="150px" scrolling="no">
 						Canvas not supported by your browser
 					</canvas> -->
